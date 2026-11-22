@@ -1,0 +1,726 @@
+/* ==========================
+   VARIÁVEIS (PALETA)
+   Dourado + azul-petróleo (cores complementares) sobre fundo escuro
+   ========================== */
+:root {
+  --fundo: #0c0a09;          /* fundo principal */
+  --fundo-2: #141110;        /* rodapé / cartões */
+  --azul-fundo: #0e1a23;     /* seções em azul bem escuro */
+  --azul: #3a7ca5;           /* azul complementar */
+  --azul-escuro: #14303f;
+  --latao: #d4a94f;          /* dourado */
+  --latao-escuro: #b8913a;
+  --vermelho: #a33a3a;
+  --texto: #ece4d6;
+  --texto-suave: #a99f90;
+  --linha: rgba(236, 228, 214, 0.14);
+
+  --fonte-titulo: 'Oswald', sans-serif;
+  --fonte-destaque: 'Playfair Display', serif;
+  --fonte-corpo: 'Inter', sans-serif;
+
+  --largura: 1080px;
+}
+
+/* ==========================
+   RESET E BASE
+   ========================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+}
+
+body {
+  font-family: var(--fonte-corpo);
+  color: var(--texto);
+  background: var(--fundo);
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.container {
+  width: min(var(--largura), 100% - 2.5rem);
+  margin-inline: auto;
+}
+
+/* ==========================
+   ÍCONES
+   ========================== */
+.icone {
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ==========================
+   ANIMAÇÕES
+   Tudo aparece ao rolar a página (o script no final do HTML coloca
+   .anim em cada item e .visivel quando ele entra na tela).
+   AJUSTES: duração (.7s), distância (28px) e intervalo (90ms).
+   ========================== */
+.js .anim {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+
+.js .foto.anim {
+  transform: scale(0.9) translateY(24px);
+}
+
+.js .sobre-bloco.anim {
+  transform: scale(0.85) rotate(-6deg);
+}
+
+.js .anim.visivel {
+  opacity: 1;
+  transform: none;
+}
+
+/* depois de aparecer, volta ao normal (pro hover não ficar lento) */
+.js .anim.pronto {
+  transition: transform 0.2s, opacity 0.2s;
+  transition-delay: 0s;
+}
+
+.js .foto.anim.visivel:hover {
+  transform: translateY(-4px);
+}
+
+/* ---- ícones: o círculo "pula" e o desenho é traçado ---- */
+.js .contato-info h3:nth-of-type(2) { --d: 3; }
+
+.js .revelar .servico-icone {
+  opacity: 0;
+  transform: scale(0.4) rotate(-25deg);
+}
+
+.js .revelar .icone,
+.js .hero .selo .icone {
+  opacity: 0;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.js .revelar.visivel .servico-icone {
+  animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(var(--d, 0) * 0.09s + 0.2s);
+}
+
+.js .revelar.visivel .icone {
+  animation: tracar 0.9s ease forwards;
+  animation-delay: calc(var(--d, 0) * 0.09s + 0.4s);
+}
+
+/* ---- topo da página: entra assim que abre ---- */
+.js .hero-conteudo > * {
+  opacity: 0;
+  animation: subir 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+.js .hero-conteudo > :nth-child(1) { animation-delay: 0.1s; }
+.js .hero-conteudo > :nth-child(2) { animation-delay: 0.25s; }
+.js .hero-conteudo > :nth-child(3) { animation-delay: 0.4s; }
+.js .hero-conteudo > :nth-child(4) { animation-delay: 0.55s; }
+
+.js .hero::before,
+.js .hero::after {
+  opacity: 0;
+  animation: entrar 1s ease 0.3s forwards;
+}
+
+.js .hero .selo .icone {
+  animation: tracar 0.9s ease 0.5s forwards;
+}
+
+@keyframes pop {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tracar {
+  from {
+    opacity: 1;
+    stroke-dashoffset: 1;
+  }
+  to {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes entrar {
+  to {
+    opacity: var(--op, 1);
+  }
+}
+
+/* quem prefere menos movimento vê tudo parado e já visível */
+@media (prefers-reduced-motion: reduce) {
+  .js .anim,
+  .js .revelar .servico-icone,
+  .js .revelar .icone,
+  .js .hero .selo .icone,
+  .js .hero-conteudo > *,
+  .js .hero::before {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    animation: none !important;
+  }
+
+  .js .hero::after {
+    opacity: var(--op, 1);
+    animation: none !important;
+  }
+}
+
+/* ==========================
+   TIPOGRAFIA
+   ========================== */
+h1, h2, h3 {
+  font-family: var(--fonte-titulo);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 2.5rem;
+}
+
+.rotulo {
+  font-family: var(--fonte-titulo);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-size: 0.8rem;
+  color: var(--latao);
+  margin-bottom: 0.5rem;
+}
+
+/* ==========================
+   BOTÕES
+   ========================== */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--latao);
+  color: var(--fundo);
+  font-family: var(--fonte-titulo);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.95rem;
+  padding: 0.9rem 1.8rem;
+  border: 2px solid var(--latao);
+  transition: background 0.2s, color 0.2s;
+}
+
+.botao:hover {
+  background: transparent;
+  color: var(--latao);
+}
+
+.botao-contorno {
+  background: transparent;
+  color: var(--texto);
+  border-color: var(--azul);
+}
+
+.botao-contorno:hover {
+  background: var(--azul);
+  color: var(--texto);
+  border-color: var(--azul);
+}
+
+.botao-pequeno {
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+}
+
+/* ==========================
+   CABEÇALHO
+   ========================== */
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  height: 72px;
+  background: var(--fundo);
+  border-bottom: 3px solid var(--latao);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--fonte-titulo);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--texto);
+}
+
+.logo img {
+  height: 46px;
+  width: auto;
+}
+
+.logo strong {
+  font-weight: 500;
+}
+
+.logo b {
+  font-weight: 400;
+  color: var(--latao);
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.menu a:not(.botao) {
+  font-family: var(--fonte-titulo);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+  transition: color 0.2s;
+}
+
+.menu a:not(.botao):hover {
+  color: var(--latao);
+}
+
+/* menu mobile (sem JavaScript) */
+.menu-toggle {
+  display: none;
+}
+
+.menu-botao {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.menu-botao span {
+  width: 26px;
+  height: 3px;
+  background: var(--texto);
+}
+
+/* ==========================
+   HERO
+   ========================== */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 600px;
+  background:
+    radial-gradient(ellipse at 15% 100%, rgba(58, 124, 165, 0.14), transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(212, 169, 79, 0.10), transparent 55%),
+    var(--fundo);
+  color: var(--texto);
+  padding: clamp(4rem, 10vw, 7rem) 1.5rem clamp(5rem, 11vw, 8rem);
+  overflow: hidden;
+}
+
+/* texto puxado pra esquerda */
+.hero-conteudo {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 46%;
+  margin-left: clamp(0rem, 4vw, 4rem);
+}
+
+/* ---- imagem na diagonal (lado direito) ---- */
+/* AJUSTES RÁPIDOS:
+   - largura da área da imagem: "left" (45% = começa em 45% da tela)
+   - inclinação da linha: os dois primeiros valores do polygon
+     (48% = topo da linha | 4% = base da linha) */
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 18px;           /* termina na listra */
+  left: 45%;
+  right: 0;
+  clip-path: polygon(48% 0, 100% 0, 100% 100%, 4% 100%);
+}
+
+/* linha dourada da diagonal */
+.hero::before {
+  background: var(--latao);
+  z-index: 1;
+}
+
+/* imagem (deslocada um pouco pra deixar a linha dourada aparecer) */
+.hero::after {
+  background:
+    url("img/barba.png") center / cover no-repeat,
+    var(--azul-fundo);
+  transform: translateX(6px);
+  z-index: 1;
+}
+
+.selo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--fonte-titulo);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-size: 0.8rem;
+  color: var(--latao);
+  border: 1px solid var(--latao);
+  padding: 0.4rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 em {
+  font-family: var(--fonte-destaque);
+  font-style: italic;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--latao);
+}
+
+.hero-texto {
+  max-width: 520px;
+  font-size: 1.1rem;
+  color: var(--texto-suave);
+  margin-bottom: 2.2rem;
+}
+
+.hero-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* listra de barbeiro (poste) */
+.hero-listra {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 18px;
+  z-index: 3;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--vermelho) 0 18px,
+    var(--texto) 18px 36px,
+    var(--azul) 36px 54px,
+    var(--texto) 54px 72px
+  );
+}
+
+/* ==========================
+   SEÇÕES
+   ========================== */
+.secao {
+  padding: clamp(3.5rem, 8vw, 6rem) 0;
+}
+
+.secao-azul {
+  background: var(--azul-fundo);
+  border-block: 1px solid var(--azul-escuro);
+}
+
+/* ==========================
+   SERVIÇOS
+   ========================== */
+.lista-servicos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 4rem;
+}
+
+.lista-servicos li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1.3rem 0;
+  border-bottom: 1px dashed var(--linha);
+}
+
+.servico-icone {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--azul-escuro);
+  border: 1px solid var(--azul);
+  color: var(--latao);
+  font-size: 1.4rem;
+}
+
+.servico-info h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.2rem;
+}
+
+.servico-info p {
+  font-size: 0.95rem;
+  color: var(--texto-suave);
+}
+
+.servico-preco {
+  font-family: var(--fonte-titulo);
+  font-size: 1.3rem;
+  color: var(--latao);
+  white-space: nowrap;
+}
+
+/* ==========================
+   SOBRE
+   ========================== */
+.sobre {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.sobre-bloco {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: 3px solid var(--latao);
+  outline: 3px solid var(--azul);
+  outline-offset: 8px;
+}
+
+.sobre-numero {
+  font-family: var(--fonte-destaque);
+  font-size: 7rem;
+  line-height: 1;
+  color: var(--latao);
+}
+
+.sobre-legenda {
+  font-family: var(--fonte-titulo);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.sobre-texto h2 {
+  margin-bottom: 1.5rem;
+}
+
+.sobre-texto p + p {
+  margin-top: 1rem;
+}
+
+.sobre-texto p:not(.rotulo) {
+  color: var(--texto-suave);
+}
+
+/* ==========================
+   GALERIA
+   ========================== */
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.foto {
+  aspect-ratio: 1;
+  /* foto (definida no HTML em --img) por cima; ícone de câmera aparece se não houver foto */
+  background-image:
+    var(--img),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4a94f' stroke-opacity='.45' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z'/%3E%3Ccircle cx='12' cy='13' r='3'/%3E%3C/svg%3E");
+  background-size: cover, 64px;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  background-color: var(--fundo-2);
+  border: 1px solid var(--linha);
+  border-bottom: 5px solid var(--latao);
+  transition: transform 0.2s;
+}
+
+.foto:hover {
+  transform: translateY(-4px);
+}
+
+/* ==========================
+   CONTATO
+   ========================== */
+.contato {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.contato h2 {
+  margin-bottom: 1.2rem;
+}
+
+.contato > div:first-child p:not(.rotulo) {
+  color: var(--texto-suave);
+  margin-bottom: 2rem;
+}
+
+.contato-info h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  color: var(--latao);
+  margin-bottom: 0.5rem;
+}
+
+.contato-info p {
+  color: var(--texto-suave);
+  margin-bottom: 1.8rem;
+}
+
+.horarios li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px dashed var(--linha);
+  color: var(--texto-suave);
+}
+
+/* ==========================
+   RODAPÉ
+   ========================== */
+.rodape {
+  background: #080706;
+  color: var(--texto-suave);
+  text-align: center;
+  font-size: 0.85rem;
+  padding: 1.8rem 1rem;
+  border-top: 3px solid var(--latao);
+}
+
+/* ==========================
+   RESPONSIVO
+   ========================== */
+@media (max-width: 860px) {
+  /* no celular a imagem vira fundo apagado atrás do texto */
+  .hero::before {
+    display: none;
+  }
+
+  .hero::after {
+    left: 0;
+    clip-path: none;
+    transform: none;
+    --op: 0.25;
+  }
+
+  .hero-conteudo {
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .menu-botao {
+    display: flex;
+  }
+
+  .menu {
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.5rem;
+    background: var(--fundo);
+    border-bottom: 3px solid var(--latao);
+    display: none;
+  }
+
+  .menu-toggle:checked ~ .menu {
+    display: flex;
+  }
+
+  .lista-servicos,
+  .contato {
+    grid-template-columns: 1fr;
+  }
+
+  .galeria {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sobre {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .sobre-bloco {
+    max-width: 220px;
+    margin-inline: auto;
+  }
+
+  .sobre-numero {
+    font-size: 5rem;
+  }
+}
